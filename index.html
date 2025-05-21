@@ -1,0 +1,744 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MySol-x - Join the meme-coin revolution and farm points for a future token drop!">
+    <title>MySol-x - To the Moon!</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #10171b;
+            color: #e1e8ea;
+            line-height: 1.6;
+        }
+
+        /* Ribbon Style: 20% Black on Left, 80% Yellow on Right with Backslash Tilt */
+        .ribbon {
+            background: linear-gradient(135deg, #000 20%, #fabc2c 20%);
+            color: #000;
+            text-align: center;
+            padding: 8px 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1000;
+            width: 100%;
+            margin-bottom: 16px;
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        .ribbon-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ribbon-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        @media (min-width: 1024px) {
+            .ribbon {
+                font-size: 16px;
+                padding: 10px 20px;
+                margin-bottom: 24px;
+            }
+            .ribbon-logo {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Main Header Section with Left/Right Gaps */
+        .header-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding: 0 0 24px 0;
+            margin: 0 16px;
+        }
+        @media (min-width: 1024px) {
+            .header-container {
+                flex-direction: row;
+                padding: 0 0 32px 0;
+                margin: 0 24px;
+            }
+        }
+
+        /* Left Side (Logo, Timer, Button) */
+        .left-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        @media (min-width: 1024px) {
+            .left-block {
+                position: sticky;
+                top: 15px;
+                margin: 0;
+            }
+        }
+        .left-block .logo-wrapper {
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(250, 188, 44, 0.3);
+            border: 1px solid rgba(250, 188, 44, 0.2);
+            border-radius: 12px;
+        }
+        .left-block .logo-wrapper img {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+        }
+        @media (min-width: 1024px) {
+            .left-block .logo-wrapper img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        /* Countdown Timer */
+        .timer-desk {
+            border: 1px solid #303d43;
+            border-radius: 16px;
+            background: #10171b;
+            padding: 8px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #252d31;
+            position: relative;
+        }
+        .timer-desk .timer-wrap {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 70%), linear-gradient(145deg, #4b5356, #303d43 50%, #252d31);
+            padding: 12px;
+            border: 1px solid #4b5356;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+        }
+        .timer-desk .timer-wrap .timer-num {
+            width: 56px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .timer-desk .timer-wrap .timer-num .dot {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: absolute;
+            top: 50%;
+            right: -6px;
+            transform: translateY(-50%);
+        }
+        .timer-desk .timer-wrap .timer-num .dot span {
+            width: 4px;
+            height: 4px;
+            background: #66747c;
+            border-radius: 50%;
+        }
+        .timer-desk .timer-wrap .timer-num .timer-num_title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #eff5f6;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+        @media (min-width: 1024px) {
+            .timer-desk .timer-wrap .timer-num .timer-num_title {
+                font-size: 28px;
+                line-height: 36px;
+            }
+        }
+        .timer-desk .timer-wrap .timer-num .sub-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #98a4aa;
+        }
+        .timer-label {
+            display: block;
+            text-align: center;
+            margin-bottom: 2px;
+            background: linear-gradient(145deg, #303d43, #4b5356);
+            font-size: 16px;
+            font-weight: 600;
+            color: #eff5f6;
+            border: 1px solid #303d43;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            text-transform: uppercase;
+            border-radius: 50px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .timer-label::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: #fabc2c;
+            border-radius: 1px;
+        }
+
+        /* Timer Animation */
+        @keyframes fadeUpdate {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .timer-num_title.updated {
+            animation: fadeUpdate 0.3s ease-in-out;
+        }
+
+        /* CTA Button */
+        .timer-btn, .btn-wrapper {
+            border: 1px solid #303d43;
+            border-radius: 16px;
+            background: #10171b;
+            padding: 8px;
+            width: fit-content;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
+            border-bottom: 2px solid #252d31;
+            position: relative;
+        }
+        .timer-btn {
+            margin-top: 16px;
+        }
+        .timer-btn a, .btn-wrapper a {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 70%), linear-gradient(180deg, #fabc2c 0%, #e0a824 100%);
+            padding: 12px 19px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            border-radius: 8px;
+            border: 1px solid #4b5356;
+            color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 220px;
+            min-height: 48px;
+            margin: 0 auto;
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+            animation: pulseGlow 2s infinite ease-in-out;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 2px 4px rgba(250, 188, 44, 0.3); }
+            50% { box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 4px 8px rgba(250, 188, 44, 0.5); }
+            100% { box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 2px 4px rgba(250, 188, 44, 0.3); }
+        }
+        .timer-btn a:hover, .btn-wrapper a:hover {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 70%), linear-gradient(180deg, #fcce5a 0%, #e8b944 100%);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25), 0 5px 10px rgba(0,0,0,0.15);
+            transform: scale(1.05);
+        }
+        .timer-btn a:active, .btn-wrapper a:active {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 70%), linear-gradient(180deg, #e0a824 0%, #c69220 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            transform: translateY(1px) scale(1);
+        }
+        @media (min-width: 1024px) {
+            .timer-btn a, .btn-wrapper a {
+                font-size: 18px;
+            }
+        }
+        .timer-btn a svg {
+            width: 19px;
+            height: 19px;
+            fill: #000;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+        }
+
+        /* Right Side (Intro, Task Description, Conditions, Project Description, Footer) */
+        .right-block {
+            flex: 1;
+        }
+
+        /* Section Fade-In Animation */
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Intro, Task Description, Conditions, Project Description, Footer Sections */
+        .intro-section, .task-description, .conditions, .project-description, .footer-disclaimer {
+            background: #1b2529;
+            border: 1px solid #303d43;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .intro-section h2, .task-description h2, .conditions h2, .project-description h2, .footer-disclaimer h2 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 28.8px;
+            color: #eff5f6;
+            margin-bottom: 12px;
+        }
+        @media (min-width: 1024px) {
+            .intro-section h2, .task-description h2, .conditions h2, .project-description h2, .footer-disclaimer h2 {
+                font-size: 36px;
+                line-height: 43.2px;
+            }
+        }
+        .intro-section p, .task-description p, .conditions p, .project-description p, .footer-disclaimer p {
+            font-size: 16px;
+            line-height: 25.6px;
+            color: #e1e8ea;
+            margin-bottom: 12px;
+        }
+        .intro-section p .highlight, .task-description p .highlight, .conditions p .highlight, .project-description p .highlight, .footer-disclaimer p .highlight {
+            color: #fabc2c;
+            font-weight: 600;
+        }
+        .intro-section p .project, .task-description p .project {
+            font-weight: 600;
+        }
+
+        /* Intro Details (Token, Project links, Category) */
+        .intro-details, .task-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+        @media (min-width: 640px) {
+            .intro-details, .task-details {
+                flex-wrap: nowrap;
+            }
+        }
+        .detail-box {
+            width: fit-content;
+            min-width: 120px;
+            padding: 12px;
+            border: 1px solid #303d43;
+            border-radius: 8px;
+            background: #10171b;
+            text-align: center;
+        }
+        .detail-box h3 {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 16px;
+            color: #98a4aa;
+            margin-bottom: 10px;
+        }
+        .detail-box p, .detail-box .social-links {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            color: #eff5f6;
+            margin: 0 auto;
+        }
+        .detail-box .social-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .detail-box .social-links a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 70%), linear-gradient(145deg, #4b5356, #303d43 50%, #252d31);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 1px rgba(255,255,255,0.1);
+            border-bottom: 2px solid #252d31;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .detail-box .social-links a:hover {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 70%), linear-gradient(145deg, #5a6266, #3c4549 50%, #2e3539);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25), 0 5px 10px rgba(0,0,0,0.15);
+            transform: scale(1.05);
+        }
+        .detail-box .social-links a:active {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 70%), linear-gradient(145deg, #454c50, #2a3236 50%, #202529);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            transform: translateY(1px) scale(1);
+        }
+        .detail-box .social-links a svg {
+            width: 24px;
+            height: 24px;
+            fill: #e1e8ea;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+        }
+        .detail-box .social-links a:hover svg {
+            fill: #ffffff;
+        }
+
+        /* Divider */
+        .divider {
+            border-top: 1px solid #303d43;
+            margin: 24px 0;
+        }
+
+        /* Task Description */
+        .task-description .cta-button {
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Conditions */
+        .conditions .condition-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #303d43;
+        }
+        .conditions .condition-step:last-child {
+            border-bottom: none;
+        }
+        .conditions .condition-step .step-number {
+            width: 32px;
+            height: 32px;
+            background: #303d43;
+            color: #eff5f6;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .conditions .condition-step p {
+            font-size: 16px;
+            line-height: 25.6px;
+            color: #e1e8ea;
+            margin: 0;
+        }
+
+        /* Footer Links (Copyright and Privacy) with Gaps */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            margin: 0 16px;
+        }
+        @media (min-width: 1024px) {
+            .footer-links {
+                margin: 0 24px;
+            }
+        }
+        .footer-links span, .footer-links a {
+            font-size: 14px;
+            color: #98a4aa;
+            line-height: 20px;
+        }
+        .footer-links a {
+            text-decoration: underline;
+        }
+        .footer-links a:hover {
+            color: #e1e8ea;
+        }
+    </style>
+</head>
+<body>
+    <!-- Ribbon: 20% Black on Left, 80% Yellow on Right with Backslash Tilt -->
+    <div class="ribbon">
+        <div class="ribbon-content">
+            <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo">
+            <span>Welcome to MySol-x – Farm Points for a Token Drop!</span>
+        </div>
+    </div>
+
+    <!-- Main Header Section -->
+    <div class="header-container">
+        <!-- Left Block: Logo, Timer, Button -->
+        <div class="left-block">
+            <div class="logo-wrapper">
+                <img src="MemeCoinWeb.png" alt="MySol-x Meme Coin Logo">
+            </div>
+            <span class="timer-label">TIME LEFT</span>
+            <div class="timer-desk">
+                <div class="timer-wrap">
+                    <div class="timer-num">
+                        <span class="timer-num_title" id="days">8</span>
+                        <span class="sub-title">Days</span>
+                        <div class="dot"><span></span><span></span></div>
+                    </div>
+                    <div class="timer-num">
+                        <span class="timer-num_title" id="hours">11</span>
+                        <span class="sub-title">Hours</span>
+                        <div class="dot"><span></span><span></span></div>
+                    </div>
+                    <div class="timer-num">
+                        <span class="timer-num_title" id="minutes">21</span>
+                        <span class="sub-title">Minutes</span>
+                        <div class="dot"><span></span><span></span></div>
+                    </div>
+                    <div class="timer-num">
+                        <span class="timer-num_title" id="seconds">00</span>
+                        <span class="sub-title">Seconds</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timer-btn">
+                <a href="https://web.telegram.org/a/" target="_blank">
+                    Start Earning $MySol-x
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Block: Intro, Task Description, Conditions, Project Description, Footer -->
+        <div class="right-block">
+            <!-- Intro Section -->
+            <div class="intro-section section">
+                <h2>MySol-x</h2>
+                <p>Install MySol-x and passively farm points for a future token drop. Turn your bandwidth into <span class="highlight">$MySol-x points</span> by running a browser extension and completing social quests.</p>
+                <div class="intro-details">
+                    <div class="detail-box">
+                        <h3>Token</h3>
+                        <p>$SOL-X</p>
+                    </div>
+                    <div class="detail-box">
+                        <h3>Project links</h3>
+                        <div class="social-links">
+                            <a href="https://x.com/i/flow/login" target="_blank">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M14.258 10.152L23.176 0h-2.113l-7.747 8.813L7.133 0H0l9.352 13.328L0 23.973h2.113l8.176-9.309 6.531 9.309h7.133zm-2.895 3.293l-.949-1.328L2.875 1.56h3.246l6.086 8.523.949 1.328 7.945 11.136h-3.246z"/>
+                                </svg>
+                            </a>
+                            <a href="https://web.telegram.org/a/" target="_blank">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 3c-.3.2-.7.5-1 .7L5 10c-.6.3-.9.8-.8 1.4.1.5.5.9 1 .9h.2l5-2 4 3.5c.2.2.5.3.8.2.3-.1.5-.3 .6-.6L20 4c.2-.6-.1-1.2-.7-1.4zM9 17l-1 4c-.1.4.1.8.5.9h.2c.3 0 .6-.2.7-.5l1.5-3.5-2-1.4z"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <h3>Category</h3>
+                        <p>AirDrop RetroDrop</p>
+                    </div>
+                </div>
+            </div>
+            <div class="divider"></div>
+
+            <!-- Task Description Section -->
+            <div class="task-description section">
+                <h2>Ready to Unlock Free Crypto Rewards?</h2>
+                <p>
+                    Ready to unlock Free Crypto Rewards and be part of the next big wave in Web3? Crypto AirDrops and RetroDrops are on their way.
+                    Earn <span class="highlight">Thousands of dollars'</span> worth of tokens just by completing simple tasks and being an early user of trending crypto projects.
+                    No need to invest — Just Connect, Participate, and get Rewarded! Many smart users have already claimed <span class="highlight">Life-changing Rewards</span> from our projects like <span class="project">Neiro (NEIRO)</span>, <span class="project">Bonk (BONK)</span>, <span class="project">Pepe (PEPE)</span>, <span class="project">Brett (BRETT)</span>, and <span class="project">SPX6900</span>.
+                    Now it’s your turn to tap into this exciting world of opportunities. I’ll show you exactly how to qualify, step-by-step, and guide you to the most Promising and Legit AirDrops and RetroDrops campaigns.
+                    Don’t miss this <span class="highlight">Golden Opportunity</span> to Earn Free Crypto without spending a single penny.
+                    This is real, it’s easy, and It’s Your Moment to Shine in the Crypto Revolution.
+                    Click the button below and join me now — Let’s Grab These Free Rewards Together!
+                </p>
+                <div class="task-details">
+                    <div class="detail-box">
+                        <h3>Time to Complete</h3>
+                        <p>5 minutes setup</p>
+                    </div>
+                    <div class="detail-box">
+                        <h3>Investment</h3>
+                        <p>None</p>
+                    </div>
+                    <div class="detail-box">
+                        <h3>Risk Level</h3>
+                        <p>None</p>
+                    </div>
+                </div>
+                <div class="cta-button">
+                    <div class="btn-wrapper">
+                        <a href="https://web.telegram.org/a/" target="_blank">Join Now & Grab Free Rewards</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Conditions Section -->
+            <div class="conditions section">
+                <h2>Unlock Rewards in Five Easy Steps</h2>
+                <div class="condition-step">
+                    <span class="step-number">1</span>
+                    <p>Join the Telegram Channel</p>
+                </div>
+                <div class="condition-step">
+                    <span class="step-number">2</span>
+                    <p>Receive Updates about the Project</p>
+                </div>
+                <div class="condition-step">
+                    <span class="step-number">3</span>
+                    <p>Choose a Project of your Choice</p>
+                </div>
+                <div class="condition-step">
+                    <span class="step-number">4</span>
+                    <p>Follow the Instructions</p>
+                </div>
+                <div class="condition-step">
+                    <span class="step-number">5</span>
+                    <p><span class="highlight">Receive your Rewards</span> and <span class="highlight">Raise your Earnings</span> by participating in Referral Programs</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Project Description Section -->
+            <div class="project-description section">
+                <h2>Our Campaign and Project Description:</h2>
+                <p>AirDrops are one of the <span class="highlight">smartest and easiest ways</span> to earn free crypto - offered as instant rewards for completing simple actions like joining a Telegram channel, following an X (Twitter) handle, liking a Facebook page, or sharing a post. These tasks take just seconds, but the value you can gain is substantial.</p>
+                <p>RetroDrops take it a step further. These are powerful, surprise rewards given after a project achieves success, exclusively for the <span class="highlight">early users</span> who showed up, supported, and helped it grow. Imagine being rewarded just for being there at the right time.</p>
+                <p>Over time, these seemingly small tokens have turned into <span class="highlight">huge earnings</span> for many smart users who took action early. We’ve seen users earn thousands of dollars from tokens that started as free drops - and we continue to witness that success story with each new campaign we launch.</p>
+                <p>If you’re early, the rewards can be <span class="highlight">life-changing</span>.</p>
+                <p>This is your chance to get in before the world catches on.</p>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Footer Section: Disclaimer and Links -->
+            <div class="footer-disclaimer section">
+                <h2>Disclaimer:</h2>
+                <p>Even though the official deadlines haven’t been confirmed yet, opportunities like this don’t stay open forever! We strongly encourage you to <span class="highlight">take action now</span>, the earlier you participate, the better your chances of securing AirDrops, RetroDrops, and valuable Rewards. We’re closely monitoring for official updates and will update this page immediately once the deadlines are confirmed. But time may be running out - <span class="highlight">act now</span> to secure your spot before it’s too late. <span class="highlight">Move fast</span> and stay ahead of the crowd!</p>
+            </div>
+            <div class="footer-links">
+                <span>©Copyright 2018</span> | <a href="https://crypto.com/privacy/en">Privacy Statement</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown Timer Logic with Fade Animation
+        const cycleDuration = 863940; // 9 days, 23 hours, 59 minutes in seconds
+        let prevDays = null, prevHours = null, prevMinutes = null, prevSeconds = null;
+        function updateTimer() {
+            const now = Math.floor(Date.now() / 1000);
+            const elapsed = now % cycleDuration;
+            const remaining = cycleDuration - elapsed;
+
+            const days = Math.floor(remaining / (24 * 60 * 60));
+            const hours = Math.floor((remaining % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((remaining % (60 * 60)) / 60);
+            const seconds = remaining % 60;
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            if (prevDays !== days) {
+                daysEl.textContent = days;
+                daysEl.classList.add('updated');
+                prevDays = days;
+            }
+            if (prevHours !== hours) {
+                hoursEl.textContent = hours < 10 ? '0' + hours : hours;
+                hoursEl.classList.add('updated');
+                prevHours = hours;
+            }
+            if (prevMinutes !== minutes) {
+                minutesEl.textContent = minutes < 10 ? '0' + minutes : minutes;
+                minutesEl.classList.add('updated');
+                prevMinutes = minutes;
+            }
+            if (prevSeconds !== seconds) {
+                secondsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
+                secondsEl.classList.add('updated');
+                prevSeconds = seconds;
+            }
+        }
+
+        // Update timer every second
+        updateTimer();
+        setInterval(updateTimer, 1000);
+
+        // Section Fade-In Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>
