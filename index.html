@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -58,15 +19,16 @@
             line-height: 1.6;
         }
 
-        /* Ribbon Style: 20% Black on Left, 80% Yellow on Right with Backslash Tilt */
+        /* Ribbon Style: Smooth Overlapping Color Effect */
         .ribbon {
-            background: linear-gradient(135deg, #000 20%, #fabc2c 20%);
+            background: linear-gradient(120deg, #000 15%, #d89e23 20%, #fabc2c 25%);
             color: #000;
             text-align: center;
-            padding: 8px 16px;
+            padding: 7px 16px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 23px;
+            font-weight: 700;
+            line-height: 28.1px;
             position: relative;
             z-index: 1000;
             width: 100%;
@@ -74,30 +36,44 @@
             text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
         }
 
+        .ribbon-logo-container {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            margin-right: 8px;
+        }
+
+        .ribbon-logo {
+            width: 156px;
+            object-fit: contain;
+        }
+
         .ribbon-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
             max-width: 1200px;
             margin: 0 auto;
-        }
-
-        .ribbon-logo {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
+            padding-left: 180px;
         }
 
         @media (min-width: 1024px) {
             .ribbon {
-                font-size: 16px;
-                padding: 10px 20px;
+                font-size: 36px;
+                line-height: 43.2px;
+                padding: 7px 20px;
                 margin-bottom: 24px;
             }
+            .ribbon-logo-container {
+                left: 20px;
+                margin-right: 12px;
+            }
             .ribbon-logo {
-                width: 40px;
-                height: 40px;
+                width: 212px;
+            }
+            .ribbon-content {
+                padding-left: 244px;
             }
         }
 
@@ -343,16 +319,16 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.1);
         }
         .intro-section h2, .task-description h2, .conditions h2, .project-description h2, .footer-disclaimer h2 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            line-height: 28.8px;
+            line-height: 24px;
             color: #eff5f6;
             margin-bottom: 12px;
         }
         @media (min-width: 1024px) {
             .intro-section h2, .task-description h2, .conditions h2, .project-description h2, .footer-disclaimer h2 {
-                font-size: 36px;
-                line-height: 43.2px;
+                font-size: 29px;
+                line-height: 35px;
             }
         }
         .intro-section p, .task-description p, .conditions p, .project-description p, .footer-disclaimer p {
@@ -360,6 +336,14 @@
             line-height: 25.6px;
             color: #e1e8ea;
             margin-bottom: 12px;
+        }
+        /* Apply Justified Alignment to Task Description, Project Description, and Footer Disclaimer paragraphs */
+        .task-description p, .project-description p, .footer-disclaimer p {
+            text-align: justify;
+        }
+        /* Override for task-details p elements to ensure center alignment */
+        .task-details .detail-box p {
+            text-align: center;
         }
         .intro-section p .highlight, .task-description p .highlight, .conditions p .highlight, .project-description p .highlight, .footer-disclaimer p .highlight {
             color: #fabc2c;
@@ -510,13 +494,18 @@
         .footer-links a:hover {
             color: #e1e8ea;
         }
+        .footer-links .datetime {
+            font-size: 14px;
+            color: #98a4aa;
+            line-height: 20px;
+        }
     </style>
 </head>
 <body>
-    <!-- Ribbon: 20% Black on Left, 80% Yellow on Right with Backslash Tilt -->
+    <!-- Ribbon: Smooth Overlapping Color Effect -->
     <div class="ribbon">
         <div class="ribbon-logo-container">
-        <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo">
+            <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo">
         </div>
         <div class="ribbon-content">
             <span>Welcome to MySol-x – Farm Points for a Token Drop!</span>
@@ -676,12 +665,61 @@
             <div class="footer-disclaimer section">
                 <h2>Disclaimer:</h2>
                 <p>Even though the official deadlines haven’t been confirmed yet, opportunities like this don’t stay open forever! We strongly encourage you to <span class="highlight">take action now</span>, the earlier you participate, the better your chances of securing AirDrops, RetroDrops, and valuable Rewards. We’re closely monitoring for official updates and will update this page immediately once the deadlines are confirmed. But time may be running out - <span class="highlight">act now</span> to secure your spot before it’s too late. <span class="highlight">Move fast</span> and stay ahead of the crowd!</p>
+                <div class="cta-button">
+                    <div class="btn-wrapper">
+                        <a href="https://web.telegram.org/a/" target="_blank">Learn More</a>
+                    </div>
+                </div>
             </div>
             <div class="footer-links">
-                <span>©Copyright 2018</span> | <a href="https://crypto.com/privacy/en">Privacy Statement</a>
+                <span>©Copyright 2018</span> | <a href="https://crypto.com/privacy/en">Privacy Statement</a> | <span class="datetime" id="current-datetime"></span>
             </div>
         </div>
     </div>
+
+    <!-- Commented out Excel processing script (not used by the landing page) -->
+    <!--
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+    </script>
+    -->
 
     <script>
         // Countdown Timer Logic with Fade Animation
@@ -728,7 +766,35 @@
         updateTimer();
         setInterval(updateTimer, 1000);
 
-        // Section Fade-In Animation
+        // UTC Date/Time Display Logic
+        function updateUTCTime() {
+            // System-provided IST time: 00:42:00 on May 24, 2025
+            const istDate = new Date('2025-05-24T00:42:00+05:30');
+            // Get current time difference from the system-provided IST time
+            const now = new Date();
+            const timeDiff = now - istDate; // Difference in milliseconds
+            // Apply the difference to the IST base time
+            const currentIST = new Date(istDate.getTime() + timeDiff);
+            // Convert IST to UTC (subtract 5 hours 30 minutes)
+            const utcDate = new Date(currentIST.getTime() - (5 * 60 + 30) * 60 * 1000);
+
+            // Format the UTC time
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const dayName = days[utcDate.getUTCDay()];
+            const monthName = months[utcDate.getUTCMonth()];
+            const day = utcDate.getUTCDate();
+            const hours = utcDate.getUTCHours().toString().padStart(2, '0');
+            const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
+            const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
+            const year = utcDate.getUTCFullYear();
+
+            // Update the datetime element
+            const datetimeEl = document.getElementById('current-datetime');
+            datetimeEl.textContent = `Universal Time (UTC) ${hours}:${minutes}:${seconds} on ${dayName}, ${monthName} ${day}, ${year}`;
+        }
+
+        // Section Fade-In Animation and Initial UTC Time Update
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('.section');
             const observer = new IntersectionObserver((entries, observer) => {
@@ -740,6 +806,11 @@
                 });
             }, { threshold: 0.1 });
             sections.forEach(section => observer.observe(section));
+
+            // Initial UTC time update
+            updateUTCTime();
+            // Update UTC time every second
+            setInterval(updateUTCTime, 1000);
         });
     </script>
 </body>
