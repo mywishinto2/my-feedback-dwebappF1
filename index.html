@@ -366,6 +366,39 @@
                 flex-wrap: nowrap;
             }
         }
+        .category-token-wrapper, .investment-risk-wrapper {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 12px;
+        }
+        @media (max-width: 639px) {
+            .intro-details, .task-details {
+                flex-wrap: wrap;
+            }
+            .category-token-wrapper, .investment-risk-wrapper {
+                flex: 1 1 100%;
+                justify-content: center;
+            }
+            .category-token-wrapper .detail-box, .investment-risk-wrapper .detail-box {
+                flex: 1 1 0;
+                min-width: 120px;
+                max-width: 150px;
+            }
+            .intro-details .detail-box:nth-child(2), /* Project links */
+            .task-details .detail-box:nth-child(2) { /* Time to Complete */
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+        @media (min-width: 640px) {
+            .category-token-wrapper, .investment-risk-wrapper {
+                flex-wrap: wrap;
+                gap: 0;
+            }
+            .category-token-wrapper .detail-box, .investment-risk-wrapper .detail-box {
+                max-width: none;
+            }
+        }
         .detail-box {
             width: fit-content;
             min-width: 120px;
@@ -499,6 +532,12 @@
             color: #98a4aa;
             line-height: 20px;
         }
+        @media (max-width: 639px) {
+            .footer-links span, .footer-links a, .footer-links .datetime {
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -560,9 +599,15 @@
                 <h2>MySol-x</h2>
                 <p>Install MySol-x and passively farm points for a future token drop. Turn your bandwidth into <span class="highlight">$MySol-x points</span> by running a browser extension and completing social quests.</p>
                 <div class="intro-details">
-                    <div class="detail-box">
-                        <h3>Token</h3>
-                        <p>$SOL-X</p>
+                    <div class="category-token-wrapper">
+                        <div class="detail-box">
+                            <h3>Category</h3>
+                            <p>AirDrop | RetroDrop</p>
+                        </div>
+                        <div class="detail-box">
+                            <h3>Token</h3>
+                            <p>$SOL-X</p>
+                        </div>
                     </div>
                     <div class="detail-box">
                         <h3>Project links</h3>
@@ -578,10 +623,6 @@
                                 </svg>
                             </a>
                         </div>
-                    </div>
-                    <div class="detail-box">
-                        <h3>Category</h3>
-                        <p>AirDrop RetroDrop</p>
                     </div>
                 </div>
             </div>
@@ -600,17 +641,19 @@
                     Click the button below and join me now — Let’s Grab These Free Rewards Together!
                 </p>
                 <div class="task-details">
+                    <div class="investment-risk-wrapper">
+                        <div class="detail-box">
+                            <h3>Investment</h3>
+                            <p>None</p>
+                        </div>
+                        <div class="detail-box">
+                            <h3>Risk Level</h3>
+                            <p>None</p>
+                        </div>
+                    </div>
                     <div class="detail-box">
                         <h3>Time to Complete</h3>
                         <p>5 minutes setup</p>
-                    </div>
-                    <div class="detail-box">
-                        <h3>Investment</h3>
-                        <p>None</p>
-                    </div>
-                    <div class="detail-box">
-                        <h3>Risk Level</h3>
-                        <p>None</p>
                     </div>
                 </div>
                 <div class="cta-button">
@@ -768,30 +811,19 @@
 
         // UTC Date/Time Display Logic
         function updateUTCTime() {
-            // System-provided IST time: 00:42:00 on May 24, 2025
-            const istDate = new Date('2025-05-24T00:42:00+05:30');
-            // Get current time difference from the system-provided IST time
+            // System-provided IST time: 12:42:00 on May 25, 2025
+            const istDate = new Date('2025-05-25T12:42:00+05:30');
             const now = new Date();
-            const timeDiff = now - istDate; // Difference in milliseconds
-            // Apply the difference to the IST base time
+            const timeDiff = now - istDate;
             const currentIST = new Date(istDate.getTime() + timeDiff);
-            // Convert IST to UTC (subtract 5 hours 30 minutes)
             const utcDate = new Date(currentIST.getTime() - (5 * 60 + 30) * 60 * 1000);
 
-            // Format the UTC time
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            const dayName = days[utcDate.getUTCDay()];
-            const monthName = months[utcDate.getUTCMonth()];
-            const day = utcDate.getUTCDate();
             const hours = utcDate.getUTCHours().toString().padStart(2, '0');
             const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
             const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
-            const year = utcDate.getUTCFullYear();
 
-            // Update the datetime element
             const datetimeEl = document.getElementById('current-datetime');
-            datetimeEl.textContent = `Universal Time (UTC) ${hours}:${minutes}:${seconds} on ${dayName}, ${monthName} ${day}, ${year}`;
+            datetimeEl.textContent = `UTC ${hours}:${minutes}:${seconds}`;
         }
 
         // Section Fade-In Animation and Initial UTC Time Update
