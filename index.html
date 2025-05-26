@@ -19,23 +19,41 @@
             line-height: 1.6;
         }
 
-        /* Ribbon Style: Smooth Overlapping Color Effect */
+        /* Ribbon Style: Larger Text and Glossy 3D Effects */
         .ribbon {
-            background: linear-gradient(120deg, #000 15%, #d89e23 20%, #fabc2c 25%);
-            color: #000;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 70%), #1b2529;
+            border: 1px solid;
+            border-image: linear-gradient(45deg, #303d43, #4b5356, #303d43) 1;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), 0 6px 12px rgba(0,0,0,0.15), 0 0 8px rgba(250,188,44,0.3);
+            color: #fabc2c;
             text-align: center;
-            padding: 7px 16px;
+            padding: 8px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 23px;
+            font-size: 24px;
             font-weight: 700;
-            line-height: 28.1px;
+            line-height: 28px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
             position: relative;
             z-index: 1000;
-            width: 100%;
-            margin-bottom: 16px;
-            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+            margin: 0 16px 16px 16px;
+            overflow: hidden;
         }
-
+        .ribbon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 3s infinite linear;
+        }
+        @keyframes shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
         .ribbon-logo-container {
             position: absolute;
             top: 50%;
@@ -43,27 +61,25 @@
             transform: translateY(-50%);
             margin-right: 8px;
         }
-
         .ribbon-logo {
             width: 156px;
             object-fit: contain;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-
         .ribbon-content {
             display: flex;
             align-items: center;
             justify-content: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding-left: 180px;
+            padding-left: 196px;
         }
-
         @media (min-width: 1024px) {
             .ribbon {
-                font-size: 36px;
-                line-height: 43.2px;
-                padding: 7px 20px;
-                margin-bottom: 24px;
+                font-size: 34px;
+                line-height: 40px;
+                padding: 8px;
+                margin: 0 24px 24px 24px;
             }
             .ribbon-logo-container {
                 left: 20px;
@@ -73,7 +89,7 @@
                 width: 212px;
             }
             .ribbon-content {
-                padding-left: 244px;
+                padding-left: 268px;
             }
         }
 
@@ -277,11 +293,6 @@
             box-shadow: 0 3px 6px rgba(0,0,0,0.25), 0 5px 10px rgba(0,0,0,0.15);
             transform: scale(1.05);
         }
-        .timer-btn a:active, .btn-wrapper a:active {
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 70%), linear-gradient(180deg, #e0a824 0%, #c69220 100%);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-            transform: translateY(1px) scale(1);
-        }
         @media (min-width: 1024px) {
             .timer-btn a, .btn-wrapper a {
                 font-size: 18px;
@@ -341,15 +352,8 @@
         .task-description p, .project-description p, .footer-disclaimer p {
             text-align: justify;
         }
-        /* Override for task-details p elements to ensure center alignment */
-        .task-details .detail-box p {
-            text-align: center;
-        }
         .intro-section p .highlight, .task-description p .highlight, .conditions p .highlight, .project-description p .highlight, .footer-disclaimer p .highlight {
             color: #fabc2c;
-            font-weight: 600;
-        }
-        .intro-section p .project, .task-description p .project {
             font-weight: 600;
         }
 
@@ -387,7 +391,6 @@
             font-weight: 600;
             line-height: 24px;
             color: #eff5f6;
-            margin: 0 auto;
         }
         .detail-box .social-links {
             display: flex;
@@ -411,11 +414,6 @@
             background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent 70%), linear-gradient(145deg, #5a6266, #3c4549 50%, #2e3539);
             box-shadow: 0 3px 6px rgba(0,0,0,0.25), 0 5px 10px rgba(0,0,0,0.15);
             transform: scale(1.05);
-        }
-        .detail-box .social-links a:active {
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent 70%), linear-gradient(145deg, #454c50, #2a3236 50%, #202529);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-            transform: translateY(1px) scale(1);
         }
         .detail-box .social-links a svg {
             width: 24px;
@@ -508,13 +506,13 @@
     </style>
 </head>
 <body>
-    <!-- Ribbon: Smooth Overlapping Color Effect -->
+    <!-- Ribbon: Larger Text and Glossy 3D Effects -->
     <div class="ribbon">
         <div class="ribbon-logo-container">
             <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo">
         </div>
         <div class="ribbon-content">
-            <span>Welcome to MySol-x – Farm Points for a Token Drop!</span>
+            <span>Welcome to MySolx Farm</span>
         </div>
     </div>
 
@@ -686,7 +684,6 @@
     <script>
         // Countdown Timer Logic with Fade Animation
         const cycleDuration = 863940; // 9 days, 23 hours, 59 minutes in seconds
-        let prevDays = null, prevHours = null, prevMinutes = null, prevSeconds = null;
         function updateTimer() {
             const now = Math.floor(Date.now() / 1000);
             const elapsed = now % cycleDuration;
@@ -702,26 +699,16 @@
             const minutesEl = document.getElementById('minutes');
             const secondsEl = document.getElementById('seconds');
 
-            if (prevDays !== days) {
-                daysEl.textContent = days;
-                daysEl.classList.add('updated');
-                prevDays = days;
-            }
-            if (prevHours !== hours) {
-                hoursEl.textContent = hours < 10 ? '0' + hours : hours;
-                hoursEl.classList.add('updated');
-                prevHours = hours;
-            }
-            if (prevMinutes !== minutes) {
-                minutesEl.textContent = minutes < 10 ? '0' + minutes : minutes;
-                minutesEl.classList.add('updated');
-                prevMinutes = minutes;
-            }
-            if (prevSeconds !== seconds) {
-                secondsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
-                secondsEl.classList.add('updated');
-                prevSeconds = seconds;
-            }
+            daysEl.textContent = days;
+            hoursEl.textContent = hours < 10 ? '0' + hours : hours;
+            minutesEl.textContent = minutes < 10 ? '0' + minutes : minutes;
+            secondsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
+
+            // Apply animation to all elements on every update
+            daysEl.classList.add('updated');
+            hoursEl.classList.add('updated');
+            minutesEl.classList.add('updated');
+            secondsEl.classList.add('updated');
         }
 
         // Update timer every second
@@ -730,8 +717,8 @@
 
         // UTC Date/Time Display Logic
         function updateUTCTime() {
-            // System-provided IST time: 17:28:00 on May 25, 2025
-            const istDate = new Date('2025-05-25T17:28:00+05:30');
+            // System-provided IST time: 01:19:00 on May 27, 2025
+            const istDate = new Date('2025-05-27T01:19:00+05:30');
             const now = new Date();
             const timeDiff = now - istDate;
             const currentIST = new Date(istDate.getTime() + timeDiff);
