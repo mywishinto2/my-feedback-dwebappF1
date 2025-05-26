@@ -19,40 +19,21 @@
             line-height: 1.6;
         }
 
-        /* Ribbon Style: Larger Text and Glossy 3D Effects */
+        /* Ribbon Style: Reverted to Previous Layout, Design, and Effects */
         .ribbon {
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 70%), #1b2529;
-            border: 1px solid;
-            border-image: linear-gradient(45deg, #303d43, #4b5356, #303d43) 1;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3), 0 6px 12px rgba(0,0,0,0.15), 0 0 8px rgba(250,188,44,0.3);
+            background: linear-gradient(120deg, #000 15%, #d89e23 20%, #1b2529 25%);
             color: #fabc2c;
             text-align: center;
-            padding: 8px;
+            padding: 7px 16px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 24px;
             font-weight: 700;
             line-height: 28px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
             position: relative;
             z-index: 1000;
-            margin: 0 16px 16px 16px;
-            overflow: hidden;
-        }
-        .ribbon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shine 3s infinite linear;
-        }
-        @keyframes shine {
-            0% { left: -100%; }
-            50% { left: 100%; }
-            100% { left: 100%; }
+            width: 100%;
+            margin: 0 0 16px 0;
         }
         .ribbon-logo-container {
             position: absolute;
@@ -72,14 +53,14 @@
             justify-content: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding-left: 196px;
+            padding-left: 180px;
         }
         @media (min-width: 1024px) {
             .ribbon {
                 font-size: 34px;
                 line-height: 40px;
-                padding: 8px;
-                margin: 0 24px 24px 24px;
+                padding: 7px 20px;
+                margin: 0 0 24px 0;
             }
             .ribbon-logo-container {
                 left: 20px;
@@ -89,7 +70,7 @@
                 width: 212px;
             }
             .ribbon-content {
-                padding-left: 268px;
+                padding-left: 244px;
             }
         }
 
@@ -348,7 +329,6 @@
             color: #e1e8ea;
             margin-bottom: 12px;
         }
-        /* Apply Justified Alignment to Task Description, Project Description, and Footer Disclaimer paragraphs */
         .task-description p, .project-description p, .footer-disclaimer p {
             text-align: justify;
         }
@@ -506,7 +486,7 @@
     </style>
 </head>
 <body>
-    <!-- Ribbon: Larger Text and Glossy 3D Effects -->
+    <!-- Ribbon: Reverted to Previous Layout, Design, and Effects -->
     <div class="ribbon">
         <div class="ribbon-logo-container">
             <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo">
@@ -704,21 +684,18 @@
             minutesEl.textContent = minutes < 10 ? '0' + minutes : minutes;
             secondsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
 
-            // Apply animation to all elements on every update
             daysEl.classList.add('updated');
             hoursEl.classList.add('updated');
             minutesEl.classList.add('updated');
             secondsEl.classList.add('updated');
         }
 
-        // Update timer every second
         updateTimer();
         setInterval(updateTimer, 1000);
 
         // UTC Date/Time Display Logic
         function updateUTCTime() {
-            // System-provided IST time: 01:19:00 on May 27, 2025
-            const istDate = new Date('2025-05-27T01:19:00+05:30');
+            const istDate = new Date('2025-05-27T02:10:00+05:30');
             const now = new Date();
             const timeDiff = now - istDate;
             const currentIST = new Date(istDate.getTime() + timeDiff);
@@ -732,7 +709,6 @@
             datetimeEl.textContent = `UTC ${hours}:${minutes}:${seconds}`;
         }
 
-        // Section Fade-In Animation and Initial UTC Time Update
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('.section');
             const observer = new IntersectionObserver((entries, observer) => {
@@ -745,9 +721,7 @@
             }, { threshold: 0.1 });
             sections.forEach(section => observer.observe(section));
 
-            // Initial UTC time update
             updateUTCTime();
-            // Update UTC time every second
             setInterval(updateUTCTime, 1000);
         });
     </script>
