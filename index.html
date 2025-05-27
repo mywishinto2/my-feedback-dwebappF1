@@ -19,9 +19,9 @@
             line-height: 1.6;
         }
 
-        /* Ribbon Style: Reverted to Previous Layout, Design, and Effects */
+        /* Ribbon Style */
         .ribbon {
-            background: linear-gradient(120deg, #000 15%, #d89e23 20%, #1b2529 25%);
+            background: linear-gradient(120deg, #000 15%, #1b2529 25%);
             color: #fabc2c;
             text-align: center;
             padding: 7px 16px;
@@ -214,6 +214,12 @@
             background: #fabc2c;
             border-radius: 1px;
         }
+        .timer-note {
+            font-size: 12px;
+            color: #98a4aa;
+            margin-top: 8px;
+            text-align: center;
+        }
 
         /* Timer Animation */
         @keyframes fadeUpdate {
@@ -283,7 +289,6 @@
             width: 19px;
             height: 19px;
             fill: #000;
-            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
         }
 
         /* Right Side (Intro, Task Description, Conditions, Project Description, Footer) */
@@ -323,14 +328,12 @@
                 line-height: 35px;
             }
         }
-        .intro-section p, .task-description p, .conditions p, .project-description p, .footer-disclaimer p {
-            font-size: 16px;
-            line-height: 25.6px;
-            color: #e1e8ea;
+        .intro-section p, .conditions p {
             margin-bottom: 12px;
         }
         .task-description p, .project-description p, .footer-disclaimer p {
             text-align: justify;
+            margin-bottom: 12px;
         }
         .intro-section p .highlight, .task-description p .highlight, .conditions p .highlight, .project-description p .highlight, .footer-disclaimer p .highlight {
             color: #fabc2c;
@@ -367,10 +370,12 @@
             margin-bottom: 10px;
         }
         .detail-box p, .detail-box .social-links {
-            font-size: 16px;
             font-weight: 600;
             line-height: 24px;
             color: #eff5f6;
+        }
+        .task-details .detail-box p {
+            text-align: center;
         }
         .detail-box .social-links {
             display: flex;
@@ -486,10 +491,10 @@
     </style>
 </head>
 <body>
-    <!-- Ribbon: Reverted to Previous Layout, Design, and Effects -->
+    <!-- Ribbon -->
     <div class="ribbon">
         <div class="ribbon-logo-container">
-            <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo">
+            <img src="NoxVappicon.png" alt="MySol-x Logo" class="ribbon-logo" loading="lazy">
         </div>
         <div class="ribbon-content">
             <span>Welcome to MySolx Farm</span>
@@ -501,11 +506,11 @@
         <!-- Left Block: Logo, Timer, Button -->
         <div class="left-block">
             <div class="logo-wrapper">
-                <img src="MemeCoinWeb.png" alt="MySol-x Meme Coin Logo">
+                <img src="MemeCoinWeb.png" alt="MySol-x Meme Coin Logo" loading="lazy">
             </div>
             <span class="timer-label">TIME LEFT</span>
             <div class="timer-desk">
-                <div class="timer-wrap">
+                <div class="timer-wrap" aria-live="polite">
                     <div class="timer-num">
                         <span class="timer-num_title" id="days">8</span>
                         <span class="sub-title">Days</span>
@@ -526,9 +531,10 @@
                         <span class="sub-title">Seconds</span>
                     </div>
                 </div>
+                <p class="timer-note">Cycle resets every 10 days—join anytime!</p>
             </div>
             <div class="timer-btn">
-                <a href="https://web.telegram.org/a/" target="_blank">
+                <a href="https://web.telegram.org/a/" target="_blank" rel="noopener noreferrer">
                     Start Earning $MySol-x
                     <svg viewBox="0 0 24 24">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -555,12 +561,12 @@
                     <div class="detail-box">
                         <h3>Project links</h3>
                         <div class="social-links">
-                            <a href="https://x.com/i/flow/login" target="_blank">
+                            <a href="https://x.com/i/flow/login" target="_blank" rel="noopener noreferrer">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M14.258 10.152L23.176 0h-2.113l-7.747 8.813L7.133 0H0l9.352 13.328L0 23.973h2.113l8.176-9.309 6.531 9.309h7.133zm-2.895 3.293l-.949-1.328L2.875 1.56h3.246l6.086 8.523.949 1.328 7.945 11.136h-3.246z"/>
                                 </svg>
                             </a>
-                            <a href="https://web.telegram.org/a/" target="_blank">
+                            <a href="https://web.telegram.org/a/" target="_blank" rel="noopener noreferrer">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M21 3c-.3.2-.7.5-1 .7L5 10c-.6.3-.9.8-.8 1.4.1.5.5.9 1 .9h.2l5-2 4 3.5c.2.2.5.3.8.2.3-.1.5-.3 .6-.6L20 4c.2-.6-.1-1.2-.7-1.4zM9 17l-1 4c-.1.4.1.8.5.9h.2c.3 0 .6-.2.7-.5l1.5-3.5-2-1.4z"/>
                                 </svg>
@@ -599,7 +605,7 @@
                 </div>
                 <div class="cta-button">
                     <div class="btn-wrapper">
-                        <a href="https://web.telegram.org/a/" target="_blank">Join Now & Grab Free Rewards</a>
+                        <a href="https://web.telegram.org/a/" target="_blank" rel="noopener noreferrer">Join Now & Grab Free Rewards</a>
                     </div>
                 </div>
             </div>
@@ -651,12 +657,14 @@
                 <p>Even though the official deadlines haven’t been confirmed yet, opportunities like this don’t stay open forever! We strongly encourage you to <span class="highlight">take action now</span>, the earlier you participate, the better your chances of securing AirDrops, RetroDrops, and valuable Rewards. We’re closely monitoring for official updates and will update this page immediately once the deadlines are confirmed. But time may be running out - <span class="highlight">act now</span> to secure your spot before it’s too late. <span class="highlight">Move fast</span> and stay ahead of the crowd!</p>
                 <div class="cta-button">
                     <div class="btn-wrapper">
-                        <a href="https://web.telegram.org/a/" target="_blank">Learn More</a>
+                        <a href="https://web.telegram.org/a/" target="_blank" rel="noopener noreferrer">Learn More</a>
                     </div>
                 </div>
             </div>
             <div class="footer-links">
-                <span>©Copyright 2018</span> | <a href="https://crypto.com/privacy/en">Privacy Statement</a> | <span class="datetime" id="current-datetime"></span>
+                <span>©Copyright 2025</span> | 
+                <a href="https://crypto.com/privacy/en" target="_blank" rel="noopener noreferrer">Privacy Statement</a> | 
+                <span class="datetime" id="current-datetime" aria-live="polite"></span>
             </div>
         </div>
     </div>
@@ -690,12 +698,9 @@
             secondsEl.classList.add('updated');
         }
 
-        updateTimer();
-        setInterval(updateTimer, 1000);
-
         // UTC Date/Time Display Logic
         function updateUTCTime() {
-            const istDate = new Date('2025-05-27T02:10:00+05:30');
+            const istDate = new Date('2025-05-27T04:07:00+05:30');
             const now = new Date();
             const timeDiff = now - istDate;
             const currentIST = new Date(istDate.getTime() + timeDiff);
@@ -709,6 +714,17 @@
             datetimeEl.textContent = `UTC ${hours}:${minutes}:${seconds}`;
         }
 
+        // Combined Update Function
+        function updateAll() {
+            updateTimer();
+            updateUTCTime();
+        }
+
+        // Initial Update and Interval
+        updateAll();
+        setInterval(updateAll, 1000);
+
+        // Intersection Observer for Fade-In Animations
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('.section');
             const observer = new IntersectionObserver((entries, observer) => {
@@ -720,9 +736,6 @@
                 });
             }, { threshold: 0.1 });
             sections.forEach(section => observer.observe(section));
-
-            updateUTCTime();
-            setInterval(updateUTCTime, 1000);
         });
     </script>
 </body>
