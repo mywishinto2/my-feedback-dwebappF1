@@ -109,9 +109,9 @@
         }
         .left-block .logo-wrapper {
             display: inline-block;
-            box-shadow: 0 3px 8px rgba(250, 188, 44, 0.35);
             border: 1px solid rgba(250, 188, 44, 0.2);
             border-radius: 12px;
+            box-shadow: 0 0 8px 2px rgba(250, 188, 44, 0.35);
         }
         .left-block .logo-wrapper img {
             width: 140px;
@@ -700,15 +700,10 @@
 
         // UTC Date/Time Display Logic
         function updateUTCTime() {
-            const istDate = new Date('2025-05-27T04:07:00+05:30');
             const now = new Date();
-            const timeDiff = now - istDate;
-            const currentIST = new Date(istDate.getTime() + timeDiff);
-            const utcDate = new Date(currentIST.getTime() - (5 * 60 + 30) * 60 * 1000);
-
-            const hours = utcDate.getUTCHours().toString().padStart(2, '0');
-            const minutes = utcDate.getUTCMinutes().toString().padStart(2, '0');
-            const seconds = utcDate.getUTCSeconds().toString().padStart(2, '0');
+            const hours = now.getUTCHours().toString().padStart(2, '0');
+            const minutes = now.getUTCMinutes().toString().padStart(2, '0');
+            const seconds = now.getUTCSeconds().toString().padStart(2, '0');
 
             const datetimeEl = document.getElementById('current-datetime');
             datetimeEl.textContent = `UTC ${hours}:${minutes}:${seconds}`;
