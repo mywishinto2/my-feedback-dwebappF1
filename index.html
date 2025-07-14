@@ -6,6 +6,12 @@
     <meta name="description" content="MySol-x - Join the meme-coin revolution and farm points for a future token drop!">
     <title>MySol-x - To the Moon!</title>
     <style>
+        /* Root Variables */
+        :root {
+            --border-radius: 16px;
+            --primary-shadow-color: rgba(29, 155, 240, 0.7);
+        }
+
         /* Reset and Base Styles */
         * {
             margin: 0;
@@ -17,6 +23,12 @@
             background: #10171b;
             color: #e1e8ea;
             line-height: 1.6;
+        }
+
+        /* Fade-In Animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         /* Ribbon Style */
@@ -113,19 +125,21 @@
             border-radius: 12px;
             box-shadow: 0 0 8px 2px rgba(250, 188, 44, 0.35);
         }
-        .left-block .logo-wrapper img {
+        .left-block .logo-wrapper .meme-coin-pic {
             width: 140px;
             height: 140px;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 20px var(--primary-shadow-color);
+            animation: fadeIn 0.4s ease-out;
         }
         @media (max-width: 639px) {
-            .left-block .logo-wrapper img {
+            .left-block .logo-wrapper .meme-coin-pic {
                 width: 140px;
                 height: 140px;
             }
         }
         @media (min-width: 1024px) {
-            .left-block .logo-wrapper img {
+            .left-block .logo-wrapper .meme-coin-pic {
                 width: 200px;
                 height: 200px;
             }
@@ -507,7 +521,7 @@
         <!-- Left Block: Logo, Timer, Button -->
         <div class="left-block">
             <div class="logo-wrapper">
-                <img src="MemeCoinWeb.png" alt="MySol-x Meme Coin Logo" loading="lazy">
+                <img src="MemeCoinWeb.png" alt="MySol-x Meme Coin Logo" class="meme-coin-pic" loading="lazy">
             </div>
             <span class="timer-label">TIME LEFT</span>
             <div class="timer-desk">
